@@ -1,13 +1,45 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+    box-sizing: border-box;
+}
+
+.calculator {
+    display: grid; /*grid布局*/
+    grid-template-columns: repeat(4, 6rem); /*一行有多少列，每列长度是多少，repeat(n,p)把p重复n遍的内容重复*/
+    grid-template-rows: minmax(6rem, auto) repeat(5, 4rem); /*第一行定个最小高度*/
+    gap: 1px;
+    background-color: rgba(237, 237, 237, 0.75);
+    width: calc(24rem + 3px);
+    margin: auto;
+}
+
+.output {
+    grid-column: 1 / span 4; /*从第一个格子开始独占4个格子*/
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column; /*竖轴为主轴*/
+    align-items: flex-end; /*向右对齐*/
+    justify-content: space-around; /*在每行上均匀分配弹性元素*/
+    padding: 10px;
+    /*让输入/输出的数如果超过长度就打断放到下一行：*/
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.last-output {
+}
+
+.current-output {
+    font-size: 3rem;
+}
+
+.calculator > button {
+    background-color: rgba(246, 246, 246, 0.75);
+}
+
+.calculator > button:hover {
+    background-color: #b5b5b5;
 }

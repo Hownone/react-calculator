@@ -5,7 +5,7 @@ class NavBar extends Component {
     state = {  } 
     render() { 
         return (
-<nav className="navbar navbar-dark bg-dark">
+        <nav className="navbar navbar-dark bg-dark">
             <div className="container">
                 <Link className="navbar-brand" to="/">Web App</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
