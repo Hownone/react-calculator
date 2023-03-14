@@ -27,9 +27,25 @@ const reducer = (state = {
     currentOperand: "",
     lastOperand: "",
     operation: "",
+    overwrite: false, //是否要将结果覆盖掉
 }, action) => {
     switch (action.type) {
         case ACTIONS.Add_digit:
+            if (state.overwrite) {
+                if (state.lastOperand === '')
+                    return {
+                        ...state,
+                        overwrite: false,
+                        currentOperand: "",
+                    }
+                else {
+                    return {
+                        ...state,
+                        overwrite: false,
+                        currentOperand: action.digit,
+                    }
+                }
+            }
             if (state.currentOperand === "除数不能为0")
                 return {
                     ...state,
@@ -55,6 +71,12 @@ const reducer = (state = {
                 currentOperand: state.currentOperand + action.digit,
             }
         case ACTIONS.Delete_digit:
+            if (state.overwrite)
+                return {
+                    ...state,
+                    currentOperand: "",
+                    overwrite: false,
+                }
             if (state.currentOperand === "除数不能为0")
                 return {
                     lastOperand: "",
@@ -120,6 +142,15 @@ const reducer = (state = {
                     operation: action.operation,
                     currentOperand: "",
                 }
+        case ACTIONS.Evaluate:
+            if (state.currentOperand === '' || state.lastOperand === '' || state.operation === '') return state;
+            return {
+                ...state,
+                currentOperand: evaluate(state),
+                lastOperand: "",
+                operation: "",
+                overwrite: true,
+            }
 
         default:
             return state;
