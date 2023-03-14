@@ -61,11 +61,12 @@ const reducer = (state = {
                 return state;
             }
             //点击'.'时，若前面为空，则在前面添加一个0
-            if (action.digit === '.' && state.currentOperand === "")
+            if (action.digit === '.' && state.currentOperand === "") {
                 return {
                     ...state,
                     currentOperand: "0" + action.digit,
                 }
+            }
             return {
                 ...state,
                 currentOperand: state.currentOperand + action.digit,
