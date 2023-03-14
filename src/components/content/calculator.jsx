@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Base from './base';
+import {connect} from 'react-redux'
+import DigitButton from './calculator/digitButton';
+import ACTIONS from './../../redux/action';
+import OperationButton from './calculator/operationButton';
 
 class Calculator extends Component {
     state = {  } 
@@ -8,35 +12,54 @@ class Calculator extends Component {
             <Base>
                 <div className="calculator">
                     <div className="output">
-                        <div className="last-output">123 </div>
-                        <div className="current-output">99999999999</div>
+                        <div className="last-output">
+                            {this.props.lastOperand} {this.props.operation}
+                        </div>
+                        <div className="current-output">
+                            {this.props.currentOperand}
+                        </div>
                     </div>
-
-                    <button>AC</button>
-                    <button>Del</button>
-                    <button>x^2</button>
-                    <button>/</button>
-                    <button>7</button>
-                    <button>8</button>
-                    <button>9</button>
-                    <button>*</button>
-                    <button>4</button>
-                    <button>5</button>
-                    <button>6</button>
-                    <button>-</button>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>+</button>
+                    <OperationButton operation='CE'>CE</OperationButton>
+                    <button onClick={this.props.delete_digit}>DEL</button>
+                    <OperationButton operation='sqr'></OperationButton>
+                    <OperationButton operation='÷'></OperationButton>
+                    <DigitButton digit={"7"}></DigitButton>
+                    <DigitButton digit={"8"}></DigitButton>
+                    <DigitButton digit={"9"}></DigitButton>
+                    <OperationButton operation='×'></OperationButton>
+                    <DigitButton digit={"4"}></DigitButton>
+                    <DigitButton digit={"5"}></DigitButton>
+                    <DigitButton digit={"6"}></DigitButton>
+                    <OperationButton operation='-'></OperationButton>
+                    <DigitButton digit={"1"}></DigitButton>
+                    <DigitButton digit={"2"}></DigitButton>
+                    <DigitButton digit={"3"}></DigitButton>
+                    <OperationButton operation='+'></OperationButton>
                     <button>+/-</button>
-                    <button>0</button>
-                    <button>.</button>
-                    <button>=</button>
-
+                    <DigitButton digit={"0"}></DigitButton>
+                    <DigitButton digit={'.'}></DigitButton>
+                    <OperationButton operation='='></OperationButton>
                 </div>
             </Base>
         );
     }
 }
+
+const mapStateToProps = (state,props) => {
+    return {
+        currentOperand: state.currentOperand,
+        lastOperand: state.lastOperand,
+        operation: state.operation,
+    }
+
+}
+
+const mapDispatchToProps = {
+    delete_digit: () => {
+        return {
+            type: ACTIONS.Delete_digit,
+        }
+    }
+}
  
-export default Calculator;
+export default connect(mapStateToProps,mapDispatchToProps)(Calculator);
