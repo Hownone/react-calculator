@@ -10,7 +10,8 @@ class Calculator extends Component {
         formater: Intl.NumberFormat('en-us')
      } 
 
-     format = number => {
+     format(number) {
+        if (number === "除数不能为0") return number;
         const [integer,decimal] = number.split('.');
         if (decimal === undefined) return this.state.formater.format(integer);
         return `${this.state.formater.format(integer)}.${decimal}`;
