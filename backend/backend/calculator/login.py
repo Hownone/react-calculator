@@ -7,11 +7,14 @@ def signin(request):
     username = data.get('username')
     password = data.get('password')
     user = authenticate(username=username, password=password)
+    #print(user)
     if not user:
         return JsonResponse({
             'result': "Password or username incorrect"
         })
     login(request, user)
+
     return JsonResponse({
-        'result': "success"
+        'result': "success",
+        "is_login": "true",
     })

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import '../../login.css';
 import $ from 'jquery'
+import { Link,Navigate , useNavigate } from 'react-router-dom';
+import ACTIONS from '../../redux/action';
+import {connect} from 'react-redux'
 
 class Login extends Component {
     state = { 
@@ -16,34 +19,32 @@ class Login extends Component {
         } else if (this.state.password === "") {
             this.setState({error_message: "密码不能为空"});
         } else {
-            $.ajax({
-                url: "http://127.0.0.1:8000/login/",
-                type: "get",
-                data: {
-                    username: this.state.username,
-                    password: this.state.password,
-                },
-                dataType: 'json',
-                success(resp) {
-                    console.log(resp);
-                    if (resp.result === "success") {
-                        //js重定向，登陆成功后直接跳转到计算器页面
-                        window.location.href="/calculator";
-                    } else {
-                        this.setState({error_message: resp.result});
-                    }
-                },
-                error() {
-                    this.setState({error_message: "系统获取数据失败QAQ"});
-                }
-            })
+                $.ajax({
+                    url: "http://127.0.0.1:8000/token/",
+                    type: "post",
+                    data: {
+                        username: this.state.username,
+                        password: this.state.password,
+                    },
+                    dataType: 'json',
+                    success: (resp) => {
+                        console.log(resp);
+                        this.props.set_token(resp.access,resp.refresh,this.state.username);
+                        this.props.set_login(true);
+                     },
+                    error() {
+                        this.setState({error_message: "用户名或密码错误"});
+                     }
+                })
 
         }
-        console.log(this.state);
-
+        //console.log(this.state);
      }
 
     render() { 
+        if (this.props.is_login) {
+            return <Navigate push to="/calculator" />
+        }
         return (
             <div className="homeBox">
                 <div className="box-container">
@@ -68,7 +69,9 @@ class Login extends Component {
                         </form>
                         <div className="change-box login-change">
                             <div className="change-btn toSign">
-                                <span>Register</span>
+                                <Link to={'/register'} style={{textDecoration: "none",color: "black"}}>
+                                    <span>Register</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -77,5 +80,33 @@ class Login extends Component {
         );
     }
 }
+
+const mapStateToProps = (state,props) => {
+    return {
+        access: state.access,
+        refresh: state.refresh,
+        is_login: state.is_login,
+    }
+
+}
  
-export default Login;
+
+const mapDispatchToProps = {
+    set_token: (access,refresh,username) => {
+        return {
+            type: ACTIONS.Set_token,
+            access: access,
+            refresh: refresh,
+            username: username,
+        }
+    },
+    set_login: (is_login) => {
+        return {
+            type: ACTIONS.Set_login,
+            is_login: is_login
+        }
+    }
+}
+ 
+ 
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

@@ -4,6 +4,8 @@ const ACTIONS = {
     Choose_operation: "choose-operation",
     Clear: "clear",
     Evaluate: "evaluate",
+    Set_token: "set-token",
+    Set_login: "set-login"
 }
 
 export default ACTIONS;

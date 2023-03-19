@@ -60,6 +60,8 @@ const mapStateToProps = (state,props) => {
         currentOperand: state.currentOperand,
         lastOperand: state.lastOperand,
         operation: state.operation,
+        password: state.password,
+        username: state.username,
     }
 
 }

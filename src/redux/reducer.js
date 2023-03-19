@@ -28,6 +28,10 @@ const reducer = (state = {
     lastOperand: "",
     operation: "",
     overwrite: false, //是否要将结果覆盖掉
+    access: "",
+    refresh: "",
+    is_login: false,
+    username: "",
 }, action) => {
     switch (action.type) {
         case ACTIONS.Add_digit:
@@ -151,6 +155,19 @@ const reducer = (state = {
                 lastOperand: "",
                 operation: "",
                 overwrite: true,
+            }
+        case ACTIONS.Set_token:
+            //console.log(action.username, action.password);
+            return {
+                ...state,
+                refresh: action.refresh,
+                access: action.access,
+                username: action.username,
+            }
+        case ACTIONS.Set_login:
+            return {
+                ...state,
+                is_login: action.is_login,
             }
 
         default:
